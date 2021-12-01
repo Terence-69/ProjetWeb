@@ -28,18 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $new_password = trim($_POST["new_password"]);
     }
 
-    // Validate confirm password
-    if (empty(trim($_POST["confirm_password"]))) {
-        $confirm_password_err = "Please confirm the password.";
-    } else {
-        $confirm_password = trim($_POST["confirm_password"]);
-        if (empty($new_password_err) && ($new_password != $confirm_password)) {
-            $confirm_password_err = "Password did not match.";
-        }
-    }
-
     // Check input errors before updating the database
-    if (empty($new_password_err) && empty($confirm_password_err)) {
+    if (empty($new_password_err)) {
 
         $param_id = $_SESSION["id"];
         $param_password = password_hash($new_password, PASSWORD_DEFAULT);
@@ -91,11 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label>New Password</label>
                 <input type="password" name="new_password" class="form-control <?php echo (!empty($new_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $new_password; ?>">
                 <span class="invalid-feedback"><?php echo $new_password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>">
-                <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">

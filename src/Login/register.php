@@ -44,23 +44,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-    // Validate confirm password
-    if (empty(trim($_POST["confirm_password"]))) {
-        $confirm_password_err = "Please confirm password.";
+
+    if (empty(trim($_POST["city"]))) {
+        $city_err = "Please enter a city";
     } else {
-        $confirm_password = trim($_POST["confirm_password"]);
-        if (empty($password_err) && ($password != $confirm_password)) {
-            $confirm_password_err = "Password did not match.";
-        }
+        $city = trim($_POST["city"]);
     }
 
     // Check input errors before inserting in database
-    if (empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
+    if (empty($username_err) && empty($password_err) && empty($city_err)) {
 
         $passwordh = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
 
         // Prepare an insert statement
-        $query = 'INSERT INTO users (username, pwd) VALUES ("' . $username . '", "' . $passwordh . '");';
+        $query = 'INSERT INTO users (username, pwd, city) VALUES ("' . $username . '", "' . $passwordh . '",  "' . $city . '");';
 
         $result = $mysqli->query($query);
         if (!$result) {
@@ -109,9 +106,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <span class="invalid-feedback"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-                <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+                <label>City</label>
+                <input type="texte" name="city" class="form-control <?php echo (!empty($city_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $city; ?>">
+                <span class="invalid-feedback"><?php echo $city_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">
