@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "f7819dc2-37e9-4bfd-9092-670298880c25",
+		"name": "Projet Web",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OpenWeather",
+			"item": [
+				{
+					"name": "Weather by city name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://api.openweathermap.org/data/2.5/weather?q=London&appid=f24d5ed1277307022647a9af93f2b35a&units=metric",
+							"protocol": "http",
+							"host": [
+								"api",
+								"openweathermap",
+								"org"
+							],
+							"path": [
+								"data",
+								"2.5",
+								"weather"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "London"
+								},
+								{
+									"key": "appid",
+									"value": "f24d5ed1277307022647a9af93f2b35a"
+								},
+								{
+									"key": "units",
+									"value": "metric"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "BackEnd",
+			"item": [
+				{
+					"name": "Weather by city formatted",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/src/ApiProvider/Service/GetCity.php?name=Paris",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"src",
+								"ApiProvider",
+								"Service",
+								"GetCity.php"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Paris"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test\",\n    \"password\": \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/src/Login/login.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"src",
+								"Login",
+								"login.php"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"test\",\n    \"password\": \"test\",\n    \"city\": \"London\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8000/src/Login/register.php",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"src",
+								"Login",
+								"register.php"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
