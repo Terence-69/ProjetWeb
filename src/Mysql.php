@@ -23,7 +23,7 @@ final class Mysql
         $hostname = "127.0.0.1";
         $user = "meteo";
         $password = "meteo";
-        $database = "web";
+        $database = "Meteo";
         
         $mysql = new mysqli($hostname, $user, $password, $database);
         
