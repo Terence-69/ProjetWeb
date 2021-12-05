@@ -21,7 +21,7 @@ final class Insert
         if ($cod == "404") {
             return null;
         }
-
+        $icon = json_encode($json->weather[0]->icon);
         $temp = json_encode($json->main->temp);
         $name = json_encode($json->name);
         $windSpeed = json_encode($json->wind->speed) * 3.6; // mettre en km/h
@@ -46,9 +46,9 @@ final class Insert
         $sunset = (new \DateTime)->setTimestamp($sunset)->setTimezone(new DateTimeZone("Europe/Paris"));
         $sunset = $sunset->format('H:i:s');
 
-        $query = 'INSERT INTO city (nom, ventVitesse, ventDirection, leveSoleil, coucheSoleil, humidite, visibilite, paysCode, temperature, conditionMeteo) VALUES (' . $name . ',' . $windSpeed . ',' . json_encode($cardinal) . ',' . json_encode($sunrise) . ',' . json_encode($sunset) . ',' . $humidity . ',' . $visibility . ',' . $country . ',' . $temp . ',' . $weather . ');';
+        $query = 'INSERT INTO city (nom, ventVitesse, ventDirection, leveSoleil, coucheSoleil, humidite, visibilite, paysCode, temperature, conditionMeteo, icon) VALUES (' . $name . ',' . $windSpeed . ',' . json_encode($cardinal) . ',' . json_encode($sunrise) . ',' . json_encode($sunset) . ',' . $humidity . ',' . $visibility . ',' . $country . ',' . $temp . ',' . $weather . ',' . $icon . ');';
 
-        $$bool = $this->mysql->query($query);
+        $bool = $this->mysql->query($query);
 
         if (!$bool) {
             return "error";

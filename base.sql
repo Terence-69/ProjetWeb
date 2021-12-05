@@ -13,6 +13,7 @@ CREATE TABLE city (
     paysCode VARCHAR(30),
     temperature DOUBLE,
     conditionMeteo VARCHAR(100),
+    icon VARCHAR(30),
     PRIMARY KEY (id)
 );
 
