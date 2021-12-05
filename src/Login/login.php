@@ -11,16 +11,16 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 
-if (empty(trim($_GET["username"]))) {
+if (empty(trim($_POST["username"]))) {
     $username_err = "Please enter username.";
 } else {
-    $username = trim($_GET["username"]);
+    $username = trim($_POST["username"]);
 }
 
-if (empty(trim($_GET["password"]))) {
+if (empty(trim($_POST["password"]))) {
     $password_err = "Please enter your password.";
 } else {
-    $password = trim($_GET["password"]);
+    $password = trim($_POST["password"]);
 }
 
 if (empty($username_err) && empty($password_err)) {
@@ -39,16 +39,10 @@ if (empty($username_err) && empty($password_err)) {
         if ($result->num_rows == 1) {
             while ($obj = $result->fetch_object()) {
                 if (password_verify($password, $obj->pwd)) {
-                    session_start();
-
-                    $_SESSION["loggedin"] = true;
-                    $_SESSION["id"] = $obj->id;
-                    $_SESSION["username"] = $obj->username;
                     
                     $json = new stdClass();
 
                     $json->username = $username;
-                    $json->password = $password;
                     $json->city = $obj->city;
         
                     header('Content-Type: application/json');
