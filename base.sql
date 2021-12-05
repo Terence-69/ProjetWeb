@@ -1,5 +1,8 @@
-CREATE DATABASE web;
-use web;
+CREATE DATABASE Meteo;
+use Meteo;
+
+CREATE USER 'meteo'@'localhost' IDENTIFIED BY 'meteo';
+GRANT ALL PRIVILEGES ON Meteo.* TO 'meteo'@'localhost';
 
 CREATE TABLE city (
     id INT NOT NULL AUTO_INCREMENT,
