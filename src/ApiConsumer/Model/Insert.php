@@ -2,7 +2,6 @@
 
 namespace Meteo\ApiConsumer\Model;
 
-use DateTime;
 use DateTimeZone;
 
 final class Insert
@@ -13,9 +12,16 @@ final class Insert
     {
         $this->mysql = $mysql;
     }
-    
+
     public function execute($json)
     {
+        $json = json_decode($json);
+        $cod = $json->cod;
+
+        if ($cod == "404") {
+            return null;
+        }
+
         $temp = json_encode($json->main->temp);
         $name = json_encode($json->name);
         $windSpeed = json_encode($json->wind->speed) * 3.6; // mettre en km/h
@@ -26,13 +32,12 @@ final class Insert
         $country = json_encode($json->sys->country);
         $visibility = json_encode($json->visibility) / 1000; // metttre en km
         $weather = json_encode($json->weather[0]->description);
-        $timezone = json_encode($json->timezone);
-
-        echo $timezone;
 
         // on convertie les degres en direction 
         $direction = $windDeg / 22.5 + .5;
         $cardinal_array = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+
+        $direction = round($direction);
         $cardinal = $cardinal_array[($direction % 16)];
 
         $sunrise = (new \DateTime)->setTimestamp($sunrise)->setTimezone(new DateTimeZone("Europe/Paris"));
@@ -43,10 +48,11 @@ final class Insert
 
         $query = 'INSERT INTO city (nom, ventVitesse, ventDirection, leveSoleil, coucheSoleil, humidite, visibilite, paysCode, temperature, conditionMeteo) VALUES (' . $name . ',' . $windSpeed . ',' . json_encode($cardinal) . ',' . json_encode($sunrise) . ',' . json_encode($sunset) . ',' . $humidity . ',' . $visibility . ',' . $country . ',' . $temp . ',' . $weather . ');';
 
-        $bool = $this->mysql->query($query);
+        $$bool = $this->mysql->query($query);
 
         if (!$bool) {
-            return "erreur lors de l'insertion dans la table";
+            return "error";
         }
+        return true;
     }
 }

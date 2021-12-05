@@ -1,54 +1,40 @@
 <?php
-// Initialize the session
 session_start();
 
 require_once '../../bootstrap.php';
 
 use Meteo\Mysql;
 
-// Check if the user is logged in, otherwise redirect to login page
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: login.php");
     exit;
 }
 
-// Define variables and initialize with empty values
-$new_password = $confirm_password = "";
-$new_password_err = $confirm_password_err = "";
+if (empty(trim($_POST["new_password"]))) {
+    $new_password_err = "Please enter the new password.";
+} elseif (strlen(trim($_POST["new_password"])) < 6) {
+    $new_password_err = "Password must have atleast 6 characters.";
+} else {
+    $new_password = trim($_POST["new_password"]);
+}
 
-// Processing form data when form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (empty($new_password_err)) {
 
-    // Validate new password
-    if (empty(trim($_POST["new_password"]))) {
-        $new_password_err = "Please enter the new password.";
-    } elseif (strlen(trim($_POST["new_password"])) < 6) {
-        $new_password_err = "Password must have atleast 6 characters.";
+    $param_id = $_SESSION["id"];
+    $param_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+    $mysqli = Mysql::getInstance();
+
+    $query = 'UPDATE users SET pwd = "' . $param_password . '" WHERE id = ' . $param_id . ';';
+
+    $result = $mysqli->query($query);
+
+    if (!$result) {
+        echo "Oops! Something went wrong. Please try again later.";
     } else {
-        $new_password = trim($_POST["new_password"]);
-    }
-
-    // Check input errors before updating the database
-    if (empty($new_password_err)) {
-
-        $param_id = $_SESSION["id"];
-        $param_password = password_hash($new_password, PASSWORD_DEFAULT);
-
-        $mysqli = Mysql::getInstance();
-
-        // Prepare an update statement
-        $query = 'UPDATE users SET pwd = "' . $param_password . '" WHERE id = ' . $param_id . ';';
-
-        $result = $mysqli->query($query);
-
-        if (!$result) {
-            echo "Oops! Something went wrong. Please try again later.";
-        } else {
-            // Password updated successfully. Destroy the session, and redirect to login page
-            session_destroy();
-            header("location: login.php");
-            exit();
-        }
+        session_destroy();
+        header("location: login.php");
+        exit();
     }
 }
 ?>

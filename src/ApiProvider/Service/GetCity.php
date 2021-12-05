@@ -9,22 +9,28 @@ $name = $_GET["name"];
 
 $apiConsumer = new GetInsert();
 
-$apiConsumer->insert($name);
+$var = $apiConsumer->insert($name);
 
-$city = MysqlFactory::get($name);
-
-if (!empty($city)) {
-    // set response code - 200 OK
-    http_response_code(200);
-
+if ($var == null) {
     header('Content-Type: application/json');
-    echo json_encode($city, JSON_PRETTY_PRINT);
-} else {
-    // set response code - 404 Not found
-    http_response_code(404);
-
-    // tell the user no products found
     echo json_encode(
-        array("message" => "No products found.")
+        array("message" => "City not found")
     );
+} else if ($apiConsumer == "error") {
+    header('Content-Type: application/json');
+    echo json_encode(
+        array("message" => "Oops! Something went wrong. Please try again later.")
+    );
+} else {
+    $city = MysqlFactory::get($name);
+
+    if ($city == "error") {
+        header('Content-Type: application/json');
+        echo json_encode(
+            array("message" => "Oops! Something went wrong. Please try again later.")
+        );
+    } else {
+        header('Content-Type: application/json');
+        echo json_encode($city, JSON_PRETTY_PRINT);
+    }
 }

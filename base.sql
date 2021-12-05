@@ -12,3 +12,10 @@ CREATE TABLE city (
     conditionMeteo VARCHAR(100),
     PRIMARY KEY (id)
 );
+
+CREATE TABLE users (
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50),
+    pwd VARCHAR(255),
+    city VARCHAR(100)
+);

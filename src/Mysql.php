@@ -20,9 +20,9 @@ final class Mysql
     /** @return Mysqli */
     private static function getRealInstance()
     {
-        $hostname = "localhost";
-        $user = "terence";
-        $password = "tete17102000";
+        $hostname = "127.0.0.1";
+        $user = "meteo";
+        $password = "meteo";
         $database = "web";
         
         $mysql = new mysqli($hostname, $user, $password, $database);

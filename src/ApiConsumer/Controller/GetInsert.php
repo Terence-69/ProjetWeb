@@ -10,8 +10,11 @@ class GetInsert
     public function insert($city)
     {
         $data = new GetWeatherByCity();
+
         $json = $data->execute($city);
 
-        MysqlFactory::insert($json);
+        $var = MysqlFactory::insert($json);
+        
+        return $var;
     }
 }
