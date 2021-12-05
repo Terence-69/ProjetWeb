@@ -33,7 +33,8 @@ if (empty($username_err) && empty($password_err)) {
     if (!$result) {
         header('Content-Type: application/json');
         echo json_encode(
-            array("message" => "Oops! Something went wrong. Please try again later.")
+            array("status" => "401",
+                "message" => "Oops! Something went wrong. Please try again later.")
         );
     } else {
         if ($result->num_rows == 1) {
@@ -41,7 +42,7 @@ if (empty($username_err) && empty($password_err)) {
                 if (password_verify($password, $obj->pwd)) {
                     
                     $json = new stdClass();
-
+                    $json->status = "200";
                     $json->username = $username;
                     $json->city = $obj->city;
         
@@ -50,22 +51,22 @@ if (empty($username_err) && empty($password_err)) {
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode(
-                        array("message" => "Invalid password")
+                        array("status" => "401","message" => "Invalid password")
                     );
                 }
             }
         } else {
             header('Content-Type: application/json');
             echo json_encode(
-                array("message" => "Invalid username")
+                array("status" => "401","message" => "Invalid username")
             );
         }
     }
 } else {
     $json = new stdClass();
-
-    $json->username_err = $username_err;
-    $json->password_err = $password_err;
+    $json->status = "401";
+    $json->message = $json->message .' '. $username_err;
+    $json->message = $json->message .' '. $password_err;
 
     header('Content-Type: application/json');
     echo json_encode($json, JSON_PRETTY_PRINT);

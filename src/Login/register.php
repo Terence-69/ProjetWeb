@@ -64,9 +64,16 @@ if (empty($message)) {
         $json = new stdClass();
 
         $json->status = "401";
-        $json->username_err = $username_err;
-        $json->password_err = $password_err;
-        $json->city_err = $city_err;
+        $json->message = "";
+        if(isset($username_err)) {
+            $json->message = $json->message .' '. $username_err;
+        }
+        if(isset($password_err)) {
+            $json->message = $json->message .' '. $password_err;
+        }
+        if(isset($city_err)) {
+            $json->message = $json->message .' '. $city_err;
+        }
 
         header('Content-Type: application/json');
         echo json_encode($json, JSON_PRETTY_PRINT);
