@@ -1,3 +1,6 @@
+CREATE DATABASE web;
+use web;
+
 CREATE TABLE city (
     id INT NOT NULL AUTO_INCREMENT,
     nom VARCHAR(30),
